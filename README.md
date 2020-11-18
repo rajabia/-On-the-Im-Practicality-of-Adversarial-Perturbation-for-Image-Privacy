@@ -24,5 +24,5 @@ python3 KRTIO_UEP.py --input './inputfolder' --mode 'Enc' --k 3 --bl_size 16 --a
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Dec' --k 3 --bl_size 16 --alpha 0.45
 
 
-Please cite . Rajabi, R. Bobba, M. Rosulek, C. Wright, W. Feng, " On the (Im)Practicality of AdversarialPerturbation for Image Privacy " Accepted in Privacy Enhancing Technology Symposium !(PETS)[https://www.petsymposium.org/2021/files/papers/popets-2021-0006.pdf], 2021.
+Please cite . Rajabi, R. Bobba, M. Rosulek, C. Wright, W. Feng, " On the (Im)Practicality of Adversarial Perturbation for Image Privacy " Accepted in Privacy Enhancing Technology Symposium ![PETS](https://www.petsymposium.org/2021/files/papers/popets-2021-0006.pdf), 2021.
 
