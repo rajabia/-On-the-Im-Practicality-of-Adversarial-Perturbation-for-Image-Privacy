@@ -19,8 +19,14 @@ pip3 install sewar
 ## To perturb with KRTIO 
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Enc' --k 3 --bl_size 16 
 
-## To unperturb with krtio
+## To Remove KRTIO Perturbation
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Dec' --k 3 --bl_size 16 
+
+## To perturb with UEP
+python3 KRTIO_UEP.py --input  './inputfolder' --mode 'Enc' --method 'UEP'
+
+# To Remove  UEP Perturbation
+python3 KRTIO_UEP.py --input './inputfolder'   --method 'UEP' --mode 'Dec' 
 
 
 Please cite . Rajabi, R. Bobba, M. Rosulek, C. Wright, W. Feng, " On the (Im)Practicality of Adversarial Perturbation for Image Privacy " Accepted in Privacy Enhancing Technology Symposium ![PETS](https://www.petsymposium.org/2021/files/papers/popets-2021-0006.pdf), 2021.
