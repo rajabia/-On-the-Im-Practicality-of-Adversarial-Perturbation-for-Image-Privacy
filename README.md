@@ -16,16 +16,16 @@ pip3 install matplotlib
 
 pip3 install sewar
 
-## To perturb with KRTIO 
+### To perturb with KRTIO 
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Enc' --k 3 --bl_size 16 
 
-## To Remove KRTIO Perturbation
+### To Remove KRTIO Perturbation
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Dec' --k 3 --bl_size 16 
 
-## To perturb with UEP
+### To perturb with UEP
 python3 KRTIO_UEP.py --input  './inputfolder' --mode 'Enc' --method 'UEP'
 
-# To Remove  UEP Perturbation
+### To Remove  UEP Perturbation
 python3 KRTIO_UEP.py --input './inputfolder'   --method 'UEP' --mode 'Dec' 
 
 
