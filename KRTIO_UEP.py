@@ -14,7 +14,7 @@ import matplotlib
 import argparse
 
 from EncriptionWithAES   import Krtio_Permutations
-
+import pickle
 
 
 def permut_blocks(b,shape,Krtio_Perm,ovs_id,ovlays_add):
@@ -77,10 +77,10 @@ def compare(ImageAPath, ImageBPath):
 	
 	return s
 
-def repair(img):
+def repair(img,box=8):
 	indx=np.where((img<5) | (img>250))
 	indx=np.array(indx)
-	box=8
+	
 	for p in range(indx.shape[1]):
 		i,j,c=indx[0,p],indx[1,p],indx[2,p] 
 		if i>box and j>box and i<img.shape[0]-box and j<img.shape[1]-box:
@@ -89,16 +89,17 @@ def repair(img):
 			img[i,j,c]=np.mean(img[i-int(box/2):i+int(box/2),j-int(box/2):j+int(box/2),c])
 		elif i>box/4 and j>box and i<img.shape[0]-int(box/4) and j<img.shape[1]-int(box/4):
 			img[i,j,c]=np.mean(img[i-int(box/4):i+int(box/4),j-int(box/4):j+int(box/4),c])
-		elif i<box or j<box:
-			img[i,j,c]=np.mean(img[i:i+2*box,j:j+2*box,c])
-		elif i==img.shape[0] or j==img.shape[1]:
-			img[i,j,c]=np.mean(img[i-2*box:i,j-2*box:j,c])
-
+		elif i<box or j<box or i==img.shape[0] or j==img.shape[1]:
+			l1,l2=max(i-box,0),max(j-box,0)
+			u1,u2=min(i+box,img.shape[0]),min(j+box,img.shape[1])
+			img[i,j,c]=np.mean(img[i-l1:i+u1,j-l2:j+u2,c])
+		
 	for p in range(indx.shape[1]):
-		if i<2*box or j<2*box:
-			img[i,j,c]=np.mean(img[i:i+2*box,j:j+2*box,c])
-		elif i==img.shape[0] or j==img.shape[1]:
-			img[i,j,c]=np.mean(img[i-2*box:i,j-2*box:j,c])
+		if i<2*box or j<2*box or i==img.shape[0] or j==img.shape[1]:
+			l1,l2=max(i-box,0),max(j-box,0)
+			u1,u2=min(i+box,img.shape[0]),min(j+box,img.shape[1])
+			img[i,j,c]=np.mean(img[i-l1:i+u1,j-l2:j+u2,c])
+		
 	
 	return img
 
@@ -149,6 +150,16 @@ def main():
 
 	ovlays_add=list_files(args.overlays_folder)
 	N=len(ovlays_add)
+	dict_faces={}
+	UEP=[]
+	if (os.path.exists('mod.npy') and args.method == 'UEP'):
+		UEP=np.load('mod.npy')
+		print('UEP perturbation was loaded')
+	if (args.method == 'UEP' and os.path.exists('facelocation.pkl')):
+		f = open("facelocation.pkl","rb")
+		dict_faces=pickle.load(f)
+		f.close()
+
 	for f in inputs:
 		if args.method == 'KRTIO':
 			print('processing the file:  ...  '+f)
@@ -180,7 +191,64 @@ def main():
 				print('Saving in ... '+'./output/'+f[ind[-1]+1:])
 				recovered.save('./output/'+f[ind[-1]+1:])
 		else:
-			print('UEP is under Developement')
+			face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+			img = cv2.imread(f)
+			
+			ind=[i for i in range(len(f)) if (f[i]=='/' or f[i]=='\\')]
+			if len(ind)==0:
+				ind=[-1]
+			gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+			if  args.mode=='Enc':
+				if len(UEP)==0:
+					print('Error: Could not find uep perturbation file')
+					quit()
+				faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+				dict_faces[f[ind[-1]+1:]]=faces
+				for (x, y, w, h) in faces:
+					#cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+					
+					dsize = ( h,w)
+
+					# resize image
+					pert = cv2.resize(UEP, dsize, interpolation = cv2.INTER_AREA)
+
+					face=(img[y:y+w,x:x+h,:]/255.0)
+					
+					face=np.tanh((np.arctanh((face-0.5)*1.999999999999)+args.beta*pert))/2+0.5
+					face=np.round(face*255).astype(int)
+					img[y:y+w,x:x+h,:]=face
+
+
+				cv2.imshow('img', img)
+				cv2.waitKey(2000)
+				cv2.imwrite('./output/'+f[ind[-1]+1:],img)
+			else:
+				faces=dict_faces[f[ind[-1]+1:]]
+				img = cv2.imread(f)
+				for (x, y, w, h) in faces:
+					recoverd= np.asarray(img[y:y+w,x:x+h,:])/255.0
+					dsize = ( h,w)
+					# resize image
+					pert = cv2.resize(UEP, dsize, interpolation = cv2.INTER_AREA)
+					recoverd=np.tanh((np.arctanh((recoverd-0.5)*1.999999999999)-args.beta*pert))/2+0.5
+					recoverd_b=np.round(recoverd*255).astype(int)
+					recoverd_b=repair(recoverd_b,box=8)
+					recoverd=np.uint8(recoverd_b)
+					img[y:y+w,x:x+h,:]=recoverd
+
+				img=repair(img,box=4)
+				cv2.imshow('img', img)
+				cv2.waitKey(2000)
+				print('Saving in ... '+'./output/'+f[ind[-1]+1:])
+				cv2.imwrite('./output/'+f[ind[-1]+1:],img)
+
+	if (args.method=='UEP' and args.mode=='Enc'):	
+		f = open("facelocation.pkl","wb")
+		pickle.dump(dict_faces,f)
+		f.close()
+
+
+				
 
 if __name__ == '__main__':
 	main()
