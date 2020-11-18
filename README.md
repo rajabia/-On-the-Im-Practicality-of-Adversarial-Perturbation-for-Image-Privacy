@@ -3,18 +3,24 @@
 # Install Environment and Libraries:
 
 python3 -m venv myenv
+
 source myenv/bin/activate
+
 pip3 install pycryptodome
+
 pip3 install opencv-python
+
 pip3 install pillow
+
 pip3 install matplotlib
+
 pip3 install sewar
 
-### To run:
+# To run:
 ## To perturb with KRTIO 
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Enc' --k 3 --bl_size 16 --alpha 0.45
 
-### To unperturb with krtio
+## To unperturb with krtio
 python3 KRTIO_UEP.py --input './inputfolder' --mode 'Dec' --k 3 --bl_size 16 --alpha 0.45
 
 
