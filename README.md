@@ -6,8 +6,8 @@ Recently, adversarial perturbations have been proposed as a potential defense ag
 
 (i) learned universal ensemble perturbations (UEP)
 
-<img src="figs/UEP_beta.png" width=400 align=center> 
-
+ <div style="text-align:center"><img src="figs/UEP_beta.png" width=400 align=center> </div>
+ 
 (ii) k-randomized transparent image overlays (k-RTIO) that are semantic adversarial perturbations. 
 
 <img src="figs/krtio_images.png" width=400 align=center> 
