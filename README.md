@@ -6,11 +6,11 @@ Recently, adversarial perturbations have been proposed as a potential defense ag
 
 (i) learned universal ensemble perturbations (UEP)
 
- <p align="center"><img src="figs/UEP_beta.png" width=400 align=center alt="Sublime's custom image"/> </p>
+ <p align="center"><img src="figs/UEP_beta.png" width=400 align=center /> </p>
  
 (ii) k-randomized transparent image overlays (k-RTIO) that are semantic adversarial perturbations. 
 
-<img src="figs/krtio_images.png" width=400 align=center> 
+<img src="figs/krtio_images.png" width=400 align=center/> 
 
 We demonstrated how users can generate effective transferable perturbations under realistic assumptions with less effort.
 
