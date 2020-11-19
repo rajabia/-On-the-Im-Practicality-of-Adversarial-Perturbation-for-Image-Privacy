@@ -5,7 +5,8 @@ Image hosting platforms are a popular way to store and share images with family 
 Recently, adversarial perturbations have been proposed as a potential defense against automated recognition and classification of images by CNNs. In this paper, we explore the practicality of adversarial perturbation- based approaches as a privacy defense against automated face recognition. Specifically, we first identify practical requirements for such approaches and then propose two practical adversarial perturbation approaches – 
 
 (i) learned universal ensemble perturbations (UEP)
-<img src="figs/UEP_beta.pdf" width=500 align=center> 
+
+<img src="figs/UEP_beta.png" width=400 align=center> 
 
 (ii) k-randomized transparent image overlays (k-RTIO) that are semantic adversarial perturbations. 
 
