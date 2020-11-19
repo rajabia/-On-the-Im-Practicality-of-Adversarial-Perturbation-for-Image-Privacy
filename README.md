@@ -1,5 +1,9 @@
 ## On the (Im)Practicality of Adversarial Perturbation for Image Privacy (K-RTIO and UEP)
 
+<img src="figs/krtio_images.png" width=500 align=center> 
+
+
+
 ## Install Environment and Libraries:
 
 python3 -m venv myenv
