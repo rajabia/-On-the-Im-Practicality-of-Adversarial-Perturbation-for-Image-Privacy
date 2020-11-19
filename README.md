@@ -10,7 +10,7 @@ Recently, adversarial perturbations have been proposed as a potential defense ag
  
 (ii) k-randomized transparent image overlays (k-RTIO) that are semantic adversarial perturbations. 
 
-<img src="figs/krtio_images.png" width=400 align=center/> 
+<p align="center"><img src="figs/krtio_images.png" width=400 align=center /> </p>
 
 We demonstrated how users can generate effective transferable perturbations under realistic assumptions with less effort.
 
